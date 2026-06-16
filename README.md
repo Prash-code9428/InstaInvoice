@@ -2,6 +2,9 @@
 
 > A modern, elegant, and full-stack invoice management platform built with a cozy, professional aesthetic. Fully responsive, secure, and optimized for seamless A4 PDF export.
 
+✨ **Live Link**: [instainvoice-production-934a.up.railway.app](https://instainvoice-production-934a.up.railway.app)
+
+[![Live App](https://img.shields.io/badge/Live-Demo-brightgreen?style=flat-square&logo=google-chrome)](https://instainvoice-production-934a.up.railway.app)
 [![GitHub license](https://img.shields.io/github/license/Prash-code9428/InstaInvoice?style=flat-square&color=7D8C77)](LICENSE)
 [![GitHub stars](https://img.shields.io/github/stars/Prash-code9428/InstaInvoice?style=flat-square&color=D97706)](https://github.com/Prash-code9428/InstaInvoice/stargazers)
 [![Railway Deploy](https://img.shields.io/badge/Deployed%20on-Railway-blueviolet?style=flat-square&logo=railway)](https://railway.app)
