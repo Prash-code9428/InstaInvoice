@@ -1,0 +1,151 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700;800&family=Poppins:wght@300;400;500;600;700;800&display=swap');
+
+@import "tailwindcss";
+
+@theme {
+  --color-cozy-cream: #FDFBF7;
+  --color-cozy-sand: #F4F1EA;
+  --color-cozy-charcoal: #2D2D2D;
+
+  --color-cozy-sage-light: #E5ECE2;
+  --color-cozy-sage: #7D8C77;
+  --color-cozy-sage-dark: #5D6C58;
+
+  --color-cozy-amber-light: #FEF3C7;
+  --color-cozy-amber: #D97706;
+  --color-cozy-amber-dark: #B45309;
+
+  --radius-cozy-sm: 0.5rem;
+  --radius-cozy: 0.75rem;
+  --radius-cozy-lg: 1rem;
+  --radius-cozy-xl: 1.5rem;
+
+  --font-sans: 'Outfit', 'Inter', 'system-ui', 'sans-serif';
+  --font-poppins: 'Poppins', 'sans-serif';
+}
+
+@layer base {
+  body {
+    background-color: var(--color-cozy-cream);
+    color: var(--color-cozy-charcoal);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    min-height: 100vh;
+  }
+}
+
+/* Custom scrollbar for soft cozy aesthetic */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #F4F1EA;
+}
+::-webkit-scrollbar-thumb {
+  background: #7D8C77;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #5D6C58;
+}
+
+/* Print styles optimization for A4 paper and clean PDF outputs */
+@media print {
+  body, html {
+    height: auto !important;
+    min-height: 0 !important;
+    background: #ffffff !important;
+    background-color: #ffffff !important;
+    color: #000000 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    font-size: 12pt;
+  }
+
+  @page {
+    size: auto;
+    margin: 15mm 10mm 15mm 10mm; /* Clean standard A4 margins */
+  }
+
+  /* Reset heights on all container elements to prevent extra blank pages */
+  #root, 
+  .min-h-screen, 
+  div, 
+  main, 
+  section {
+    height: auto !important;
+    min-height: 0 !important;
+    margin-bottom: 0 !important;
+    padding-bottom: 0 !important;
+  }
+
+  /* Hide all non-printable chrome explicitly using classes and common tags */
+  header, 
+  nav, 
+  button, 
+  form, 
+  .no-print, 
+  .print-hidden,
+  aside,
+  footer { 
+    display: none !important; 
+    height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: none !important;
+  }
+  
+  /* Strip main layout columns, borders and shadows */
+  main {
+    max-width: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    display: block !important;
+  }
+
+  /* Override container styling for printing */
+  #print-area {
+    display: block !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    margin-bottom: 0 !important;
+    padding-bottom: 0 !important;
+    background: #ffffff !important;
+    color: #000000 !important;
+    page-break-after: avoid !important;
+    break-after: avoid !important;
+  }
+  
+  /* Force all text color within print-area to print clearly in black */
+  #print-area,
+  #print-area * {
+    color: #000000 !important;
+    background-color: transparent !important;
+    border-color: #e5e7eb !important;
+  }
+
+  /* Force background color rendering explicitly */
+  .print-force-bg {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    background-color: rgba(125, 140, 119, 0.1) !important; /* Tinted sage */
+  }
+
+  /* Avoid splitting table rows across pages */
+  tr {
+    page-break-inside: avoid !important;
+  }
+  
+  table {
+    page-break-inside: auto !important;
+  }
+}
+

@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 50" width="220" height="50">
+  <!-- Notebook Icon -->
+  <g transform="translate(5, 5)">
+    <!-- Back Cover Shadow -->
+    <rect x="2" y="2" width="32" height="38" rx="5" fill="#5D6C58" opacity="0.15" />
+    <!-- Notebook Cover (Sage Green) -->
+    <rect x="0" y="0" width="32" height="38" rx="5" fill="#7D8C77" />
+    <!-- Page Edge (Off-white) -->
+    <rect x="28" y="2" width="3" height="34" rx="1" fill="#F4F1EA" />
+    
+    <!-- Abstract 'i' inside Notebook -->
+    <!-- 'i' Dot -->
+    <circle cx="16" cy="12" r="3" fill="#FDFBF7" />
+    <!-- 'i' Body -->
+    <rect x="14" y="17" width="4" height="11" rx="1.5" fill="#FDFBF7" />
+    
+    <!-- Notebook Spiral Rings -->
+    <rect x="-3" y="6" width="5" height="3" rx="1" fill="#5D6C58" />
+    <rect x="-3" y="14" width="5" height="3" rx="1" fill="#5D6C58" />
+    <rect x="-3" y="22" width="5" height="3" rx="1" fill="#5D6C58" />
+    <rect x="-3" y="30" width="5" height="3" rx="1" fill="#5D6C58" />
+  </g>
+
+  <!-- Typography Text -->
+  <text x="50" y="33" font-family="'Poppins', 'Outfit', 'sans-serif'" font-size="22" font-weight="800" fill="#2D2D2D">Insta<tspan fill="#7D8C77" font-weight="500">Invoice</tspan></text>
+</svg>
