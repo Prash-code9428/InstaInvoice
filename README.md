@@ -37,6 +37,24 @@ InstaInvoice is styled around a curated, harmonious **Cozy Warm & Sage** color p
 
 ---
 
+## 📸 Application Showcase
+
+Here is a visual walk-through of the InstaInvoice platform layout:
+
+| 💻 Landing Page | 🔒 Secure Register |
+| :---: | :---: |
+| ![Landing Page](./screenshots/landing.png) | ![Register](./screenshots/register.png) |
+
+| 📊 Analytics Dashboard | ✍️ Invoice Engine |
+| :---: | :---: |
+| ![Dashboard](./screenshots/dashboard.png) | ![Invoice Generator](./screenshots/invoice_generator.png) |
+
+| 📁 Inventory Ledger | ⚙️ Business Profile |
+| :---: | :---: |
+| ![Inventory](./screenshots/inventory.png) | ![Profile](./screenshots/profile.png) |
+
+---
+
 ## 🏗️ Architecture & Data Flow
 
 ```mermaid
