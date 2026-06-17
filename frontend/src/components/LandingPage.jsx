@@ -490,38 +490,45 @@ function LandingPage() {
               </Link>
             </div>
           ) : (
-            /* Grid of dynamic user reviews */
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {testimonials.map((t) => (
-                <div 
-                  key={t._id} 
-                  className="bg-white border border-cozy-sand/70 p-6 rounded-cozy-lg shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow duration-300 relative overflow-hidden"
-                >
-                  <div className="flex flex-col gap-3.5">
-                    {/* Star Rating list */}
-                    <div className="flex items-center gap-0.5">
-                      {Array.from({ length: 5 }).map((_, i) => (
-                        <Star 
-                          key={i} 
-                          size={14} 
-                          className={i < t.rating ? "fill-cozy-amber text-cozy-amber" : "text-cozy-sand fill-transparent"} 
-                        />
-                      ))}
+            /* Ticker Tape Infinite Scrolling Testimonials */
+            <div className="w-full overflow-hidden relative py-4">
+              {/* Fade masks on left and right for premium gradient blur effect */}
+              <div className="absolute inset-y-0 left-0 w-8 md:w-24 bg-gradient-to-r from-cozy-cream via-cozy-cream/40 to-transparent z-10 pointer-events-none"></div>
+              <div className="absolute inset-y-0 right-0 w-8 md:w-24 bg-gradient-to-l from-cozy-cream via-cozy-cream/40 to-transparent z-10 pointer-events-none"></div>
+              
+              <div className="flex animate-marquee gap-6">
+                {/* Render the reviews twice to facilitate the infinite scrolling loop */}
+                {[...testimonials, ...testimonials].map((t, idx) => (
+                  <div 
+                    key={`${t._id}-${idx}`} 
+                    className="w-[280px] md:w-[340px] flex-shrink-0 bg-white border border-cozy-sand/70 p-6 rounded-cozy-lg shadow-sm flex flex-col justify-between hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 relative overflow-hidden"
+                  >
+                    <div className="flex flex-col gap-3.5 text-left">
+                      {/* Star Rating list */}
+                      <div className="flex items-center gap-0.5">
+                        {Array.from({ length: 5 }).map((_, i) => (
+                          <Star 
+                            key={i} 
+                            size={14} 
+                            className={i < t.rating ? "fill-cozy-amber text-cozy-amber" : "text-cozy-sand fill-transparent"} 
+                          />
+                        ))}
+                      </div>
+                      {/* Comment */}
+                      <p className="text-xs md:text-sm text-cozy-charcoal/80 leading-relaxed font-sans italic">
+                        "{t.comment}"
+                      </p>
                     </div>
-                    {/* Comment */}
-                    <p className="text-xs md:text-sm text-cozy-charcoal/80 leading-relaxed font-sans italic">
-                      "{t.comment}"
-                    </p>
+                    {/* User details */}
+                    <div className="mt-5 pt-4 border-t border-cozy-sand/40 flex items-center justify-between text-left">
+                      <span className="text-xs font-bold text-cozy-charcoal/85">{t.userName}</span>
+                      <span className="text-[9px] text-cozy-charcoal/40 font-medium">
+                        {new Date(t.createdAt).toLocaleDateString()}
+                      </span>
+                    </div>
                   </div>
-                  {/* User details */}
-                  <div className="mt-5 pt-4 border-t border-cozy-sand/40 flex items-center justify-between">
-                    <span className="text-xs font-bold text-cozy-charcoal/85">{t.userName}</span>
-                    <span className="text-[9px] text-cozy-charcoal/40 font-medium">
-                      {new Date(t.createdAt).toLocaleDateString()}
-                    </span>
-                  </div>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
           )}
         </section>
