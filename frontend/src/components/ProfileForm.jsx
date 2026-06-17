@@ -619,7 +619,7 @@ function ProfileForm() {
           <button
             type="submit"
             disabled={loading}
-            className="px-6 py-3 bg-cozy-sage text-white rounded-cozy hover:bg-cozy-sage-dark font-medium text-sm flex items-center gap-2 shadow-sm transition-all duration-200 hover:scale-[1.02] transform active:scale-95 disabled:opacity-50 disabled:pointer-events-none"
+            className="w-full sm:w-auto px-6 py-3 bg-cozy-sage text-white rounded-cozy hover:bg-cozy-sage-dark font-medium text-sm flex items-center justify-center gap-2 shadow-sm transition-all duration-200 hover:scale-[1.02] transform active:scale-95 disabled:opacity-50 disabled:pointer-events-none"
           >
             {loading ? <RefreshCw className="animate-spin" size={16} /> : <Save size={16} />}
             Save Business Configuration

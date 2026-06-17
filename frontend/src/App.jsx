@@ -44,17 +44,17 @@ function DashboardLayout() {
   return (
     <div className="min-h-screen flex flex-col bg-cozy-cream text-cozy-charcoal font-sans antialiased">
       {/* Navigation Header */}
-      <header className="sticky top-0 z-50 bg-cozy-cream/80 backdrop-blur-md border-b border-cozy-sand px-6 py-4 flex items-center justify-between print:hidden">
+      <header className="sticky top-0 z-50 bg-cozy-cream/80 backdrop-blur-md border-b border-cozy-sand px-4 md:px-6 py-3 md:py-4 flex items-center justify-between print:hidden">
         <Link to="/" className="flex items-center">
           <img 
             src={logo} 
             alt="InstaInvoice: Simple, accessible invoicing for small businesses." 
-            className="h-10 object-contain"
+            className="h-8 md:h-10 object-contain"
           />
         </Link>
 
-        {/* Navigation Tabs */}
-        <nav className="flex items-center gap-1 bg-cozy-sand p-1 rounded-cozy">
+        {/* Navigation Tabs (Hidden on mobile, visible on desktop) */}
+        <nav className="hidden md:flex items-center gap-1 bg-cozy-sand p-1 rounded-cozy">
           <button 
             onClick={() => setActiveView('dashboard')}
             className={`px-3 py-1.5 text-xs font-semibold rounded-cozy transition-all duration-200 ${
@@ -97,7 +97,7 @@ function DashboardLayout() {
           </button>
         </nav>
 
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-2 md:gap-4">
           <NotificationDropdown />
           <button 
             onClick={() => setActiveView(activeView === 'profile' ? 'dashboard' : 'profile')}
@@ -108,18 +108,18 @@ function DashboardLayout() {
             }`}
             title="Business Profile Settings"
           >
-            <Settings size={20} />
+            <Settings size={18} className="md:w-5 md:h-5" />
           </button>
-          <div className="h-8 w-px bg-cozy-sand"></div>
-          <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-full bg-cozy-sage/20 text-cozy-sage-dark flex items-center justify-center font-semibold text-sm">
+          <div className="h-6 md:h-8 w-px bg-cozy-sand"></div>
+          <div className="flex items-center gap-2 md:gap-3">
+            <div className="w-8 h-8 md:w-9 md:h-9 rounded-full bg-cozy-sage/20 text-cozy-sage-dark flex items-center justify-center font-semibold text-xs md:text-sm">
               {user?.name ? user.name.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase() : 'UI'}
             </div>
             <div className="flex flex-col text-left">
-              <span className="text-sm font-medium hidden md:inline">{user?.name || 'User'}</span>
+              <span className="text-xs md:text-sm font-medium hidden sm:inline">{user?.name || 'User'}</span>
               <button 
                 onClick={logout}
-                className="text-[10px] text-red-500 hover:text-red-700 font-semibold underline text-left hidden md:inline cursor-pointer"
+                className="text-[9px] md:text-[10px] text-red-500 hover:text-red-700 font-semibold underline text-left cursor-pointer"
               >
                 Log Out
               </button>
@@ -128,9 +128,9 @@ function DashboardLayout() {
         </div>
       </header>
 
-      {/* Main Container */}
+      {/* Main Container (Bottom padding adjusted for mobile bottom nav) */}
       <div className="flex-1 flex flex-col justify-between">
-        <main className="max-w-7xl mx-auto px-6 py-8 w-full flex-1">
+        <main className="max-w-7xl mx-auto px-4 md:px-6 py-6 md:py-8 pb-24 md:pb-8 w-full flex-1">
           {activeView === 'dashboard' ? (
             <div className="animate-fadeIn">
               <AnalyticsDashboard onViewChange={setActiveView} />
@@ -153,6 +153,49 @@ function DashboardLayout() {
         {/* Footer component */}
         <Footer />
       </div>
+
+      {/* Mobile Bottom Navigation Bar (Visible on mobile/tablet, hidden on desktop) */}
+      <nav className="fixed bottom-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md border-t border-cozy-sand py-2 px-4 flex items-center justify-around md:hidden print:hidden shadow-lg">
+        <button 
+          onClick={() => setActiveView('dashboard')}
+          className={`flex flex-col items-center gap-1.5 text-[10px] font-semibold transition-all duration-200 cursor-pointer ${
+            activeView === 'dashboard' ? 'text-cozy-sage-dark scale-105 font-bold' : 'text-cozy-charcoal/50 hover:text-cozy-charcoal'
+          }`}
+        >
+          <TrendingUp size={20} className={activeView === 'dashboard' ? 'text-cozy-sage-dark' : 'text-cozy-charcoal/50'} />
+          <span>Dashboard</span>
+        </button>
+        
+        <button 
+          onClick={() => setActiveView('billing')}
+          className={`flex flex-col items-center gap-1.5 text-[10px] font-semibold transition-all duration-200 cursor-pointer ${
+            activeView === 'billing' ? 'text-cozy-sage-dark scale-105 font-bold' : 'text-cozy-charcoal/50 hover:text-cozy-charcoal'
+          }`}
+        >
+          <Receipt size={20} className={activeView === 'billing' ? 'text-cozy-sage-dark' : 'text-cozy-charcoal/50'} />
+          <span>Invoice Gen</span>
+        </button>
+
+        <button 
+          onClick={() => setActiveView('inventory')}
+          className={`flex flex-col items-center gap-1.5 text-[10px] font-semibold transition-all duration-200 cursor-pointer ${
+            activeView === 'inventory' ? 'text-cozy-sage-dark scale-105 font-bold' : 'text-cozy-charcoal/50 hover:text-cozy-charcoal'
+          }`}
+        >
+          <FileText size={20} className={activeView === 'inventory' ? 'text-cozy-sage-dark' : 'text-cozy-charcoal/50'} />
+          <span>Inventory</span>
+        </button>
+
+        <button 
+          onClick={() => setActiveView('profile')}
+          className={`flex flex-col items-center gap-1.5 text-[10px] font-semibold transition-all duration-200 cursor-pointer ${
+            activeView === 'profile' ? 'text-cozy-sage-dark scale-105 font-bold' : 'text-cozy-charcoal/50 hover:text-cozy-charcoal'
+          }`}
+        >
+          <Settings size={20} className={activeView === 'profile' ? 'text-cozy-sage-dark' : 'text-cozy-charcoal/50'} />
+          <span>Profile</span>
+        </button>
+      </nav>
     </div>
   );
 }

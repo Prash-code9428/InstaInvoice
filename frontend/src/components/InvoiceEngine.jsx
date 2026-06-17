@@ -36,6 +36,9 @@ function InvoiceEngine() {
   // Active preview invoice selection (null means previewing current unsaved form)
   const [selectedHistoricalInvoice, setSelectedHistoricalInvoice] = useState(null);
 
+  // Mobile responsive view toggle
+  const [mobileTab, setMobileTab] = useState('edit'); // 'edit' or 'preview'
+
   // Form State
   const [invoiceForm, setInvoiceForm] = useState({
     invoiceNumber: '',
@@ -427,7 +430,33 @@ function InvoiceEngine() {
   }
 
   return (
-    <div className="flex flex-col gap-8 w-full items-center print:block print:p-0 print:m-0">
+    <div className="flex flex-col gap-6 md:gap-8 w-full items-center print:block print:p-0 print:m-0">
+      {/* Mobile Tab Toggles (Visible on mobile/tablet, hidden on desktop) */}
+      <div className="flex md:hidden w-full max-w-4xl bg-cozy-sand p-1 rounded-cozy print:hidden">
+        <button
+          type="button"
+          onClick={() => setMobileTab('edit')}
+          className={`flex-1 py-2 text-xs font-bold rounded-cozy transition-all duration-200 cursor-pointer ${
+            mobileTab === 'edit'
+              ? 'bg-white text-cozy-charcoal shadow-sm'
+              : 'text-cozy-charcoal/50 hover:text-cozy-charcoal'
+          }`}
+        >
+          Edit Details
+        </button>
+        <button
+          type="button"
+          onClick={() => setMobileTab('preview')}
+          className={`flex-1 py-2 text-xs font-bold rounded-cozy transition-all duration-200 cursor-pointer ${
+            mobileTab === 'preview'
+              ? 'bg-white text-cozy-charcoal shadow-sm'
+              : 'text-cozy-charcoal/50 hover:text-cozy-charcoal'
+          }`}
+        >
+          Live Preview
+        </button>
+      </div>
+
       {/* Visual Alerts */}
       {success && (
         <div className="w-full max-w-4xl mx-auto p-4 bg-cozy-sage/15 border border-cozy-sage/30 rounded-cozy flex items-start gap-3 text-cozy-sage-dark text-sm animate-fadeIn print:hidden">
@@ -451,7 +480,7 @@ function InvoiceEngine() {
       )}
 
       {/* Invoice Generator Form (Centered) */}
-      <div className="w-full max-w-4xl mx-auto flex flex-col gap-6 print:hidden">
+      <div className={`w-full max-w-4xl mx-auto flex flex-col gap-6 print:hidden ${mobileTab === 'edit' ? 'flex' : 'hidden md:flex'}`}>
         <div className="bg-white p-6 rounded-cozy-lg border border-cozy-sand shadow-sm">
           <div className="flex items-center gap-3 mb-6 pb-4 border-b border-cozy-sand">
             <div className="w-10 h-10 rounded-cozy bg-cozy-sage/10 text-cozy-sage-dark flex items-center justify-center">
@@ -594,7 +623,7 @@ function InvoiceEngine() {
                     </div>
 
                     {/* Numeric Grid (Price, Quantity, Discount, GST Rate, Subtotal) */}
-                    <div className="grid grid-cols-2 sm:grid-cols-5 gap-2 items-center flex-1 sm:flex-[2] min-w-[320px]">
+                    <div className="grid grid-cols-2 sm:grid-cols-5 gap-2 items-center flex-1 sm:flex-[2] min-w-0 sm:min-w-[320px]">
                       {/* Price */}
                       <div className="flex flex-col gap-1">
                         <label className="text-[10px] font-bold text-cozy-charcoal/50 uppercase">Price</label>
@@ -694,7 +723,7 @@ function InvoiceEngine() {
               <button
                 type="submit"
                 disabled={saving || products.length === 0}
-                className="px-6 py-3 bg-cozy-sage text-white rounded-cozy hover:bg-cozy-sage-dark font-medium text-sm flex items-center gap-2 shadow-sm transition-all duration-200 hover:scale-[1.02] transform active:scale-95 disabled:opacity-50"
+                className="w-full sm:w-auto px-6 py-3 bg-cozy-sage text-white rounded-cozy hover:bg-cozy-sage-dark font-medium text-sm flex items-center justify-center gap-2 shadow-sm transition-all duration-200 hover:scale-[1.02] transform active:scale-95 disabled:opacity-50"
               >
                 {saving ? <RefreshCw className="animate-spin" size={16} /> : <Save size={16} />}
                 Compile & Save Invoice Record
@@ -706,8 +735,8 @@ function InvoiceEngine() {
       </div>
 
       {/* LIVE INVOICE PREVIEW PANEL (A4 Stacked Layout) */}
-      <div className="w-full flex flex-col gap-6 print:block print:p-0 print:m-0">
-        <div className="w-full bg-cozy-sand/30 py-12 border-y border-cozy-sand/80 print:bg-transparent print:p-0 print:border-none print:m-0">
+      <div className={`w-full flex flex-col gap-6 print:block print:p-0 print:m-0 ${mobileTab === 'preview' ? 'flex' : 'hidden md:flex'}`}>
+        <div className="w-full overflow-x-auto bg-cozy-sand/30 py-6 md:py-12 border-y border-cozy-sand/80 print:bg-transparent print:p-0 print:border-none print:m-0">
           
           {/* Header control */}
           <div className="w-[210mm] max-w-full mx-auto bg-cozy-charcoal text-white px-6 py-3.5 flex items-center justify-between no-print rounded-t-cozy shadow-sm border-b border-cozy-charcoal/20 print:hidden">
@@ -744,7 +773,7 @@ function InvoiceEngine() {
       </div>
 
       {/* Invoice Invoicing Ledger history List (Full Width block at bottom, Centered) */}
-      <div className="bg-white rounded-cozy-lg border border-cozy-sand shadow-sm overflow-hidden w-full max-w-4xl mx-auto print:hidden">
+      <div className={`bg-white rounded-cozy-lg border border-cozy-sand shadow-sm overflow-hidden w-full max-w-4xl mx-auto print:hidden ${mobileTab === 'edit' ? 'block' : 'hidden md:block'}`}>
         <div className="bg-cozy-sand/50 p-6 border-b border-cozy-sand flex items-center justify-between">
           <div>
             <h3 className="text-lg font-bold font-serif text-cozy-charcoal">Billing Ledger History</h3>

@@ -227,7 +227,7 @@ function InventoryList() {
       )}
 
       {/* Control Header Card */}
-      <div className="bg-white p-6 rounded-cozy-lg border border-cozy-sand shadow-sm flex flex-col sm:flex-row items-center justify-between gap-4">
+      <div className="bg-white p-6 rounded-cozy-lg border border-cozy-sand shadow-sm flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4">
         <div className="flex items-center gap-3">
           <div className="w-12 h-12 rounded-cozy bg-cozy-amber/10 text-cozy-amber flex items-center justify-center">
             <FileSpreadsheet size={24} />
