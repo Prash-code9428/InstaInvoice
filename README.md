@@ -126,10 +126,13 @@ JWT_EXPIRES_IN=7d
 ```
 
 ### 3️⃣ Configure Frontend Environment
-Create a `.env` file in the `frontend/` directory (for local fallback, Vite uses `http://localhost:5000` by default):
+Create a `.env` file in the `frontend/` directory:
 ```env
 VITE_API_URL=http://localhost:5000
+VITE_SUPABASE_URL=your_supabase_project_url
+VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
 ```
+*(Note: Supabase configuration is optional, but required if you want logo and signature image uploads to functional. You can spin up a free project on Supabase and fetch these under Project Settings -> API)*
 
 ### 4️⃣ Run the Services
 *   **Start the API Server**:
@@ -176,6 +179,8 @@ git push origin main
 3.  Scroll to **Settings** -> **Build & Deploy** -> **Root Directory** and set it to `/frontend`.
 4.  Go to the **Variables** tab and add:
     *   `VITE_API_URL` = *(Paste the dynamic backend URL generated in Step B, e.g. `https://instainvoice-backend-production.up.railway.app`)*
+    *   `VITE_SUPABASE_URL` = *(Your Supabase project URL)*
+    *   `VITE_SUPABASE_ANON_KEY` = *(Your Supabase anonymous public API key)*
 5.  Go to the **Networking** tab and click **Generate Domain** to get your frontend live link.
 6.  **Done!** Your live application is fully active.
 
