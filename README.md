@@ -28,30 +28,46 @@ InstaInvoice is styled around a curated, harmonious **Cozy Warm & Sage** color p
 
 ## 🚀 Key Features
 
-*   🔒 **Secure Authentication**: JWT-based secure user sessions with bcrypt-hashed password pipelines.
+*   🔒 **Secure Authentication & Recovery**: JWT-based secure user sessions, bcrypt-hashed passwords, and multi-step security question recovery validation during registration, login, and settings update.
 *   📊 **Analytics Dashboard**: Dynamic sales reporting, total revenue counters, invoice statuses, and product metrics.
 *   ✍️ **Invoice Engine**: Add, edit, and remove dynamic items. Custom TAX/Discount modifiers, instant subtotal adjustments.
 *   📁 **Cloud Media Uploads**: Integrated Supabase storage pipelines for seamless custom logo and signature branding.
 *   🖨️ **Optimized Print Engine**: Custom CSS media-print layouts matching standard A4 dimensions perfectly.
-*   ⭐ **Customer Reviews Widget**: Live testimonial and reviews feed inside the app.
+*   ⭐ **Sliding Testimonials Carousel**: Premium testimonials slider with custom transitions, chevrons, and dots pagination.
 
 ---
 
 ## 📸 Application Showcase
 
-Here is a visual walk-through of the InstaInvoice platform layout:
+Here is a visual walk-through of the InstaInvoice platform layout, displaying screenshots at full size for maximum clarity:
 
-| 💻 Landing Page | 🔒 Secure Register |
-| :---: | :---: |
-| ![Landing Page](./screenshots/landing.png) | ![Register](./screenshots/register.png) |
+### 💻 Landing Page
+![Landing Page](./screenshots/landing.png)
 
-| 📊 Analytics Dashboard | ✍️ Invoice Engine |
-| :---: | :---: |
-| ![Dashboard](./screenshots/dashboard.png) | ![Invoice Generator](./screenshots/invoice_generator.png) |
+---
 
-| 📁 Inventory Ledger | ⚙️ Business Profile |
-| :---: | :---: |
-| ![Inventory](./screenshots/inventory.png) | ![Profile](./screenshots/profile.png) |
+### 🔒 Secure Register & Recovery Configuration
+![Register](./screenshots/register.png)
+
+---
+
+### 📊 Analytics Dashboard
+![Dashboard](./screenshots/dashboard.png)
+
+---
+
+### ✍️ Invoice Engine & A4 Document Builder
+![Invoice Generator](./screenshots/invoice_generator.png)
+
+---
+
+### 📁 Inventory Ledger
+![Inventory](./screenshots/inventory.png)
+
+---
+
+### ⚙️ Business Profile & Account Security Settings
+![Profile](./screenshots/profile.png)
 
 ---
 
