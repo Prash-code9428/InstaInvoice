@@ -1,10 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { Receipt, User, Mail, KeyRound, AlertCircle, RefreshCw } from 'lucide-react';
+import { Receipt, User, Mail, KeyRound, AlertCircle, RefreshCw, Eye, EyeOff } from 'lucide-react';
 import Footer from './Footer';
 import logo from '../assets/logo.svg';
 import LegalModal from './LegalModal';
+
+const SECURITY_QUESTIONS = [
+  "What was the name of your first pet?",
+  "What is your mother's maiden name?",
+  "In which city were you born?",
+  "What was the name of your primary school?",
+  "What is your favorite book or movie?"
+];
 
 function Register() {
   const { register, token } = useAuth();
@@ -13,8 +21,11 @@ function Register() {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
-    password: ''
+    password: '',
+    securityQuestion: SECURITY_QUESTIONS[0],
+    securityAnswer: ''
   });
+  const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState([]);
   const [agreed, setAgreed] = useState(false);
@@ -59,6 +70,10 @@ function Register() {
       tempErrors.push('Password must be at least 6 characters long.');
     }
 
+    if (!formData.securityAnswer.trim()) {
+      tempErrors.push('Security question answer is required.');
+    }
+
     return tempErrors;
   };
 
@@ -78,7 +93,13 @@ function Register() {
     }
 
     setLoading(true);
-    const result = await register(formData.name, formData.email, formData.password);
+    const result = await register(
+      formData.name,
+      formData.email,
+      formData.password,
+      formData.securityQuestion,
+      formData.securityAnswer
+    );
     setLoading(false);
 
     if (result.success) {
@@ -182,15 +203,65 @@ function Register() {
               <KeyRound size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-cozy-charcoal/40" />
               <input
                 id="register-password"
-                type="password"
+                type={showPassword ? "text" : "password"}
                 name="password"
                 value={formData.password}
                 onChange={handleChange}
                 placeholder="Minimum 6 characters"
-                className="w-full pl-10 pr-4 py-2.5 bg-cozy-cream border border-cozy-sand rounded-cozy focus:outline-none focus:ring-2 focus:ring-cozy-sage focus:border-transparent text-sm transition-all duration-200"
+                className="w-full pl-10 pr-10 py-2.5 bg-cozy-cream border border-cozy-sand rounded-cozy focus:outline-none focus:ring-2 focus:ring-cozy-sage focus:border-transparent text-sm transition-all duration-200"
                 required
               />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-cozy-charcoal/40 hover:text-cozy-charcoal transition-colors cursor-pointer"
+                title={showPassword ? "Hide password" : "Show password"}
+              >
+                {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+              </button>
             </div>
+          </div>
+
+          {/* Security Question dropdown */}
+          <div className="flex flex-col gap-1.5">
+            <label 
+              htmlFor="register-question" 
+              className="text-xs font-bold uppercase tracking-wider text-cozy-charcoal/70"
+            >
+              Security Question <span className="text-red-500">*</span>
+            </label>
+            <select
+              id="register-question"
+              name="securityQuestion"
+              value={formData.securityQuestion}
+              onChange={handleChange}
+              className="w-full px-4 py-2.5 bg-cozy-cream border border-cozy-sand rounded-cozy focus:outline-none focus:ring-2 focus:ring-cozy-sage focus:border-transparent text-sm transition-all duration-200 cursor-pointer font-medium"
+              required
+            >
+              {SECURITY_QUESTIONS.map((q, i) => (
+                <option key={i} value={q}>{q}</option>
+              ))}
+            </select>
+          </div>
+
+          {/* Security Answer input */}
+          <div className="flex flex-col gap-1.5">
+            <label 
+              htmlFor="register-answer" 
+              className="text-xs font-bold uppercase tracking-wider text-cozy-charcoal/70"
+            >
+              Security Answer <span className="text-red-500">*</span>
+            </label>
+            <input
+              id="register-answer"
+              type="text"
+              name="securityAnswer"
+              value={formData.securityAnswer}
+              onChange={handleChange}
+              placeholder="Your answer (case-insensitive)"
+              className="w-full px-4 py-2.5 bg-cozy-cream border border-cozy-sand rounded-cozy focus:outline-none focus:ring-2 focus:ring-cozy-sage focus:border-transparent text-sm transition-all duration-200"
+              required
+            />
           </div>
 
           {/* Consent Checkbox */}

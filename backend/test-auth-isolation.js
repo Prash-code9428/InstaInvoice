@@ -121,7 +121,9 @@ async function runTests() {
     const regA = await makeRequest('/api/auth/register', 'POST', {
       name: 'Alice Cooper',
       email: 'alice@example.com',
-      password: 'password123'
+      password: 'password123',
+      securityQuestion: "What is your mother's maiden name?",
+      securityAnswer: 'Smith'
     });
     
     if (regA.status !== 201 || !regA.data.token) {
@@ -136,7 +138,9 @@ async function runTests() {
     const regB = await makeRequest('/api/auth/register', 'POST', {
       name: 'Bob Marley',
       email: 'bob@example.com',
-      password: 'password123'
+      password: 'password123',
+      securityQuestion: 'In which city were you born?',
+      securityAnswer: 'Kingston'
     });
     
     if (regB.status !== 201 || !regB.data.token) {
@@ -151,7 +155,9 @@ async function runTests() {
     const regDup = await makeRequest('/api/auth/register', 'POST', {
       name: 'Alice Duplicate',
       email: 'alice@example.com',
-      password: 'password123'
+      password: 'password123',
+      securityQuestion: 'In which city were you born?',
+      securityAnswer: 'Kingston'
     });
     if (regDup.status !== 400) {
       throw new Error(`Expected 400 Bad Request for duplicate email, got ${regDup.status}`);
@@ -168,6 +174,67 @@ async function runTests() {
       throw new Error(`User A login failed: ${JSON.stringify(loginA.data)}`);
     }
     console.log('✓ User A login successful.');
+
+    // --- TEST 4b: Security question retrieval and password reset ---
+    console.log('\n[Test 4b] Testing security question and password reset flow...');
+    
+    // Retrieve question for User A
+    const getQ = await makeRequest(`/api/auth/security-question?email=${encodeURIComponent('alice@example.com')}`, 'GET');
+    if (getQ.status !== 200 || getQ.data.question !== "What is your mother's maiden name?") {
+      throw new Error(`Security question retrieval failed: ${JSON.stringify(getQ.data)}`);
+    }
+    console.log('✓ Successfully retrieved security question.');
+
+    // Attempt reset with incorrect answer (should fail)
+    const resetFail = await makeRequest('/api/auth/reset-password', 'POST', {
+      email: 'alice@example.com',
+      answer: 'WrongAnswer',
+      newPassword: 'newpassword123'
+    });
+    if (resetFail.status !== 400) {
+      throw new Error(`Expected 400 when resetting password with incorrect answer, got ${resetFail.status}`);
+    }
+    console.log('✓ Incorrect security answer correctly rejected.');
+
+    // Reset password with correct answer
+    const resetSuccess = await makeRequest('/api/auth/reset-password', 'POST', {
+      email: 'alice@example.com',
+      answer: 'Smith',
+      newPassword: 'newpassword123'
+    });
+    if (resetSuccess.status !== 200) {
+      throw new Error(`Failed to reset password: ${JSON.stringify(resetSuccess.data)}`);
+    }
+    console.log('✓ Password reset executed successfully.');
+
+    // Login with new password
+    const loginANew = await makeRequest('/api/auth/login', 'POST', {
+      email: 'alice@example.com',
+      password: 'newpassword123'
+    });
+    if (loginANew.status !== 200 || !loginANew.data.token) {
+      throw new Error(`Login with new password failed: ${JSON.stringify(loginANew.data)}`);
+    }
+    // Update token A to continue using the suite with the new session
+    tokenA = loginANew.data.token;
+    console.log('✓ Logged in successfully with new password.');
+
+    // Update security question via authenticated endpoint
+    const updateSecurity = await makeRequest('/api/auth/security', 'PUT', {
+      securityQuestion: 'What was the name of your first pet?',
+      securityAnswer: 'Fluffy'
+    }, tokenA);
+    if (updateSecurity.status !== 200) {
+      throw new Error(`Failed to update security credentials: ${JSON.stringify(updateSecurity.data)}`);
+    }
+    console.log('✓ Updated security question successfully.');
+
+    // Retrieve the new question to verify it updated
+    const getQUpdated = await makeRequest(`/api/auth/security-question?email=${encodeURIComponent('alice@example.com')}`, 'GET');
+    if (getQUpdated.status !== 200 || getQUpdated.data.question !== 'What was the name of your first pet?') {
+      throw new Error(`Retrieved incorrect updated security question: ${JSON.stringify(getQUpdated.data)}`);
+    }
+    console.log('✓ Verified updated security question.');
 
     // --- TEST 5: Verify Auth Middleware Protection ---
     console.log('\n[Test 5] Accessing protected route without token...');

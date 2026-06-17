@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Save, AlertCircle, CheckCircle, RefreshCw, Building, Upload, X } from 'lucide-react';
+import { Save, AlertCircle, CheckCircle, RefreshCw, Building, Upload, X, Lock } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { supabase } from '../utils/supabaseClient';
 
@@ -25,6 +25,62 @@ function ProfileForm() {
   const [fetching, setFetching] = useState(true);
   const [success, setSuccess] = useState(null);
   const [errors, setErrors] = useState([]);
+
+  // Security settings states
+  const SECURITY_QUESTIONS = [
+    "What was the name of your first pet?",
+    "What is your mother's maiden name?",
+    "In which city were you born?",
+    "What was the name of your primary school?",
+    "What is your favorite book or movie?"
+  ];
+
+  const [securityData, setSecurityData] = useState({
+    securityQuestion: SECURITY_QUESTIONS[0],
+    securityAnswer: ''
+  });
+  const [securityLoading, setSecurityLoading] = useState(false);
+  const [securitySuccess, setSecuritySuccess] = useState(null);
+  const [securityError, setSecurityError] = useState(null);
+
+  const handleSecurityChange = (e) => {
+    const { name, value } = e.target;
+    setSecurityData(prev => ({ ...prev, [name]: value }));
+    setSecuritySuccess(null);
+    setSecurityError(null);
+  };
+
+  const handleSecuritySubmit = async (e) => {
+    e.preventDefault();
+    setSecurityLoading(true);
+    setSecuritySuccess(null);
+    setSecurityError(null);
+
+    if (!securityData.securityAnswer.trim()) {
+      setSecurityError('Security answer is required.');
+      setSecurityLoading(false);
+      return;
+    }
+
+    try {
+      const response = await apiFetch('/api/auth/security', {
+        method: 'PUT',
+        body: JSON.stringify(securityData)
+      });
+      const data = await response.json();
+      if (response.ok) {
+        setSecuritySuccess('Security settings updated successfully.');
+        setSecurityData(prev => ({ ...prev, securityAnswer: '' })); // clear answer input for safety
+      } else {
+        setSecurityError(data.error || 'Failed to update security settings.');
+      }
+    } catch (err) {
+      console.error(err);
+      setSecurityError('Could not connect to the server.');
+    } finally {
+      setSecurityLoading(false);
+    }
+  };
   
   // States to track active asset uploads
   const [uploadingLogo, setUploadingLogo] = useState(false);
@@ -185,8 +241,10 @@ function ProfileForm() {
   }
 
   return (
-    <div className="bg-white rounded-cozy-lg border border-cozy-sand shadow-sm overflow-hidden">
-      <div className="bg-cozy-sand/50 p-6 border-b border-cozy-sand flex items-center gap-4">
+    <div className="flex flex-col gap-8">
+      {/* Enterprise Profile Card */}
+      <div className="bg-white rounded-cozy-lg border border-cozy-sand shadow-sm overflow-hidden">
+        <div className="bg-cozy-sand/50 p-6 border-b border-cozy-sand flex items-center gap-4">
         <div className="w-12 h-12 rounded-cozy bg-cozy-sage/10 text-cozy-sage-dark flex items-center justify-center">
           <Building size={24} />
         </div>
@@ -627,6 +685,91 @@ function ProfileForm() {
         </div>
       </form>
     </div>
+
+    {/* Account Security Card */}
+    <div className="bg-white rounded-cozy-lg border border-cozy-sand shadow-sm overflow-hidden">
+      <div className="bg-cozy-sand/50 p-6 border-b border-cozy-sand flex items-center gap-4">
+        <div className="w-12 h-12 rounded-cozy bg-cozy-sage/10 text-cozy-sage-dark flex items-center justify-center">
+          <Lock size={24} />
+        </div>
+        <div>
+          <h2 className="text-xl font-bold font-serif text-cozy-charcoal">Account Security</h2>
+          <p className="text-xs text-cozy-charcoal/60">Configure or update security question and verification details</p>
+        </div>
+      </div>
+
+      <form onSubmit={handleSecuritySubmit} className="p-6 flex flex-col gap-5">
+        {securitySuccess && (
+          <div className="p-4 bg-cozy-sage/15 border border-cozy-sage/30 rounded-cozy flex items-start gap-3 text-cozy-sage-dark text-sm animate-fadeIn">
+            <CheckCircle size={18} className="mt-0.5 flex-shrink-0" />
+            <span>{securitySuccess}</span>
+          </div>
+        )}
+
+        {securityError && (
+          <div className="p-4 bg-red-50 border border-red-100 rounded-cozy flex items-start gap-3 text-red-700 text-sm animate-fadeIn">
+            <AlertCircle size={18} className="mt-0.5 flex-shrink-0" />
+            <span>{securityError}</span>
+          </div>
+        )}
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-left">
+          {/* Security Question dropdown */}
+          <div className="flex flex-col gap-2">
+            <label 
+              htmlFor="security-question-select" 
+              className="text-xs font-bold uppercase tracking-wider text-cozy-charcoal/70"
+            >
+              Security Question <span className="text-red-500">*</span>
+            </label>
+            <select
+              id="security-question-select"
+              name="securityQuestion"
+              value={securityData.securityQuestion}
+              onChange={handleSecurityChange}
+              className="w-full px-4 py-2.5 bg-cozy-cream border border-cozy-sand rounded-cozy focus:outline-none focus:ring-2 focus:ring-cozy-sage focus:border-transparent text-sm transition-all duration-200 cursor-pointer font-medium"
+              required
+            >
+              {SECURITY_QUESTIONS.map((q, i) => (
+                <option key={i} value={q}>{q}</option>
+              ))}
+            </select>
+          </div>
+
+          {/* Security Answer input */}
+          <div className="flex flex-col gap-2">
+            <label 
+              htmlFor="security-answer-input" 
+              className="text-xs font-bold uppercase tracking-wider text-cozy-charcoal/70"
+            >
+              Security Answer <span className="text-red-500">*</span>
+            </label>
+            <input
+              id="security-answer-input"
+              type="text"
+              name="securityAnswer"
+              value={securityData.securityAnswer}
+              onChange={handleSecurityChange}
+              placeholder="Enter new security answer"
+              className="w-full px-4 py-2.5 bg-cozy-cream border border-cozy-sand rounded-cozy focus:outline-none focus:ring-2 focus:ring-cozy-sage focus:border-transparent text-sm transition-all duration-200"
+              required
+            />
+          </div>
+        </div>
+
+        <div className="mt-2 flex justify-end">
+          <button
+            type="submit"
+            disabled={securityLoading}
+            className="w-full sm:w-auto px-6 py-3 bg-cozy-sage text-white rounded-cozy hover:bg-cozy-sage-dark font-medium text-sm flex items-center justify-center gap-2 shadow-sm transition-all duration-200 hover:scale-[1.02] transform active:scale-95 disabled:opacity-50 cursor-pointer"
+          >
+            {securityLoading ? <RefreshCw className="animate-spin" size={16} /> : <Save size={16} />}
+            Update Security Credentials
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
   );
 }
 
