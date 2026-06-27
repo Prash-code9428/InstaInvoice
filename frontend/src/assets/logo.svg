@@ -2,25 +2,26 @@
   <!-- Notebook Icon -->
   <g transform="translate(5, 5)">
     <!-- Back Cover Shadow -->
-    <rect x="2" y="2" width="32" height="38" rx="5" fill="#5D6C58" opacity="0.15" />
-    <!-- Notebook Cover (Sage Green) -->
-    <rect x="0" y="0" width="32" height="38" rx="5" fill="#7D8C77" />
-    <!-- Page Edge (Off-white) -->
-    <rect x="28" y="2" width="3" height="34" rx="1" fill="#F4F1EA" />
+    <rect x="2" y="2" width="32" height="38" rx="5" fill="#1E4D3B" opacity="0.15" />
+    <!-- Notebook Cover (Emerald Green) -->
+    <rect x="0" y="0" width="32" height="38" rx="5" fill="#2D6A53" />
+    <!-- Page Edge (Warm Sand) -->
+    <rect x="28" y="2" width="3" height="34" rx="1" fill="#F2ECE4" />
     
     <!-- Abstract 'i' inside Notebook -->
     <!-- 'i' Dot -->
-    <circle cx="16" cy="12" r="3" fill="#FDFBF7" />
+    <circle cx="16" cy="12" r="3" fill="#FAF8F5" />
     <!-- 'i' Body -->
-    <rect x="14" y="17" width="4" height="11" rx="1.5" fill="#FDFBF7" />
+    <rect x="14" y="17" width="4" height="11" rx="1.5" fill="#FAF8F5" />
     
     <!-- Notebook Spiral Rings -->
-    <rect x="-3" y="6" width="5" height="3" rx="1" fill="#5D6C58" />
-    <rect x="-3" y="14" width="5" height="3" rx="1" fill="#5D6C58" />
-    <rect x="-3" y="22" width="5" height="3" rx="1" fill="#5D6C58" />
-    <rect x="-3" y="30" width="5" height="3" rx="1" fill="#5D6C58" />
+    <rect x="-3" y="6" width="5" height="3" rx="1" fill="#1E4D3B" />
+    <rect x="-3" y="14" width="5" height="3" rx="1" fill="#1E4D3B" />
+    <rect x="-3" y="22" width="5" height="3" rx="1" fill="#1E4D3B" />
+    <rect x="-3" y="30" width="5" height="3" rx="1" fill="#1E4D3B" />
   </g>
 
   <!-- Typography Text -->
-  <text x="50" y="33" font-family="'Poppins', 'Outfit', 'sans-serif'" font-size="22" font-weight="800" fill="#2D2D2D">Insta<tspan fill="#7D8C77" font-weight="500">Invoice</tspan></text>
+  <text x="50" y="33" font-family="'Poppins', 'Outfit', 'sans-serif'" font-size="22" font-weight="800" fill="#1D2421">Insta<tspan fill="#2D6A53" font-weight="500">Invoice</tspan></text>
 </svg>
+

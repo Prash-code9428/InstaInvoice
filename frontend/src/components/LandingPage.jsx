@@ -22,6 +22,11 @@ import {
 import { formatINR } from '../utils/format';
 import Footer from './Footer';
 import logo from '../assets/logo.svg';
+import BackgroundEffects from './BackgroundEffects';
+import VisualTour from './VisualTour';
+import { motion } from 'framer-motion';
+
+
 
 
 function LandingPage() {
@@ -126,7 +131,9 @@ function LandingPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-cozy-cream text-cozy-charcoal font-sans antialiased selection:bg-cozy-sage/25 selection:text-cozy-sage-dark">
+    <div className="min-h-screen bg-transparent text-cozy-charcoal font-sans antialiased selection:bg-cozy-sage/25 selection:text-cozy-sage-dark relative">
+      <BackgroundEffects />
+
       
       {/* Sticky Blurred Navbar Header */}
       <header className={`sticky top-0 z-50 w-full transition-all duration-300 ${
@@ -160,25 +167,64 @@ function LandingPage() {
       </header>
 
       {/* Hero Section */}
-      <main className="max-w-7xl mx-auto px-6 pt-16 pb-24 flex flex-col items-center text-center gap-8 relative overflow-hidden">
+      <motion.main 
+        initial="hidden"
+        animate="visible"
+        variants={{
+          hidden: { opacity: 0 },
+          visible: {
+            opacity: 1,
+            transition: {
+              staggerChildren: 0.15,
+              delayChildren: 0.1
+            }
+          }
+        }}
+        className="max-w-7xl mx-auto px-6 pt-16 pb-24 flex flex-col items-center text-center gap-8 relative overflow-hidden"
+      >
         {/* Soft Background Blur Circles */}
-        <div className="absolute top-10 left-10 w-72 h-72 bg-cozy-sage/5 rounded-full blur-3xl -z-10"></div>
-        <div className="absolute bottom-10 right-10 w-96 h-96 bg-cozy-amber/5 rounded-full blur-3xl -z-10"></div>
+        <div className="absolute top-10 left-10 w-72 h-72 bg-cozy-sage/5 rounded-full blur-3xl -z-10 animate-blob-pivot"></div>
+        <div className="absolute bottom-10 right-10 w-96 h-96 bg-cozy-amber/5 rounded-full blur-3xl -z-10 animate-blob-pivot-delayed"></div>
 
-        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 bg-cozy-sand text-cozy-charcoal/80 rounded-full text-xs font-semibold tracking-wide border border-cozy-charcoal/5 shadow-sm animate-pulse">
+        <motion.div 
+          variants={{
+            hidden: { y: 20, opacity: 0 },
+            visible: { y: 0, opacity: 1, transition: { type: "spring", stiffness: 100 } }
+          }}
+          className="inline-flex items-center gap-2 px-3.5 py-1.5 bg-cozy-sand text-cozy-charcoal/80 rounded-full text-xs font-semibold tracking-wide border border-cozy-charcoal/5 shadow-sm animate-float-gentle"
+        >
           <Sparkles size={14} className="text-cozy-amber" />
           <span>Multi-Tenant Invoicing Made Cozy</span>
-        </div>
+        </motion.div>
 
-        <h1 className="text-4xl md:text-6xl font-bold font-serif tracking-tight leading-[1.15] max-w-4xl text-cozy-charcoal">
+        <motion.h1 
+          variants={{
+            hidden: { y: 25, opacity: 0, letterSpacing: "-0.04em" },
+            visible: { y: 0, opacity: 1, letterSpacing: "0em", transition: { type: "spring", stiffness: 60, damping: 14 } }
+          }}
+          className="text-4xl md:text-6xl font-bold font-serif tracking-tight leading-[1.15] max-w-4xl text-cozy-charcoal"
+        >
           Simple, stress-free billing for <span className="text-cozy-sage-dark italic underline decoration-cozy-amber decoration-wavy decoration-2 underline-offset-8">small businesses</span>
-        </h1>
+        </motion.h1>
 
-        <p className="text-base md:text-lg text-cozy-charcoal/70 max-w-2xl leading-relaxed">
+
+        <motion.p 
+          variants={{
+            hidden: { y: 20, opacity: 0 },
+            visible: { y: 0, opacity: 1, transition: { duration: 0.6 } }
+          }}
+          className="text-base md:text-lg text-cozy-charcoal/70 max-w-2xl leading-relaxed"
+        >
           InstaInvoice automatically handles complex Indian GST configurations, tax exemptions, and digital outputs. Beautiful invoices, structured catalog ledgers, and zero setup stress.
-        </p>
+        </motion.p>
 
-        <div className="flex flex-col sm:flex-row gap-4 mt-4 justify-center">
+        <motion.div 
+          variants={{
+            hidden: { y: 20, opacity: 0 },
+            visible: { y: 0, opacity: 1, transition: { type: "spring", stiffness: 90 } }
+          }}
+          className="flex flex-col sm:flex-row gap-4 mt-4 justify-center"
+        >
           <Link 
             to="/register" 
             className="px-8 py-3.5 bg-cozy-sage text-white hover:bg-cozy-sage-dark rounded-cozy font-medium text-base shadow-md transition-all duration-200 hover:scale-[1.02] transform active:scale-95 flex items-center justify-center gap-2"
@@ -191,7 +237,7 @@ function LandingPage() {
           >
             Access Your Dashboard
           </Link>
-        </div>
+        </motion.div>
 
         {/* Feature Cards Grid (GST Registration Tiers) */}
         <section className="w-full mt-24 flex flex-col gap-10">
@@ -256,6 +302,9 @@ function LandingPage() {
             </div>
           </div>
         </section>
+
+        {/* Dynamic Interactive Visual Onboarding Manual */}
+        <VisualTour />
 
         {/* Interactive Pricing Calculator Widget Section */}
         <section className="w-full mt-28 max-w-4xl mx-auto bg-white border border-cozy-sand rounded-cozy-lg shadow-md overflow-hidden text-left hover:shadow-lg transition-all duration-300">
@@ -614,11 +663,12 @@ function LandingPage() {
           )}
         </section>
 
-      </main>
+      </motion.main>
 
       {/* Footer copyright */}
       <Footer />
     </div>
+
   );
 }
 

@@ -3,17 +3,17 @@
 @import "tailwindcss";
 
 @theme {
-  --color-cozy-cream: #FDFBF7;
-  --color-cozy-sand: #F4F1EA;
-  --color-cozy-charcoal: #2D2D2D;
+  --color-cozy-cream: #FAF8F5;
+  --color-cozy-sand: #F2ECE4;
+  --color-cozy-charcoal: #1D2421;
 
-  --color-cozy-sage-light: #E5ECE2;
-  --color-cozy-sage: #7D8C77;
-  --color-cozy-sage-dark: #5D6C58;
+  --color-cozy-sage-light: #E8F3ED;
+  --color-cozy-sage: #2D6A53;
+  --color-cozy-sage-dark: #1E4D3B;
 
-  --color-cozy-amber-light: #FEF3C7;
-  --color-cozy-amber: #D97706;
-  --color-cozy-amber-dark: #B45309;
+  --color-cozy-amber-light: #FEF6EB;
+  --color-cozy-amber: #C59154;
+  --color-cozy-amber-dark: #9B6C36;
 
   --radius-cozy-sm: 0.5rem;
   --radius-cozy: 0.75rem;
@@ -23,6 +23,7 @@
   --font-sans: 'Outfit', 'Inter', 'system-ui', 'sans-serif';
   --font-poppins: 'Poppins', 'sans-serif';
 }
+
 
 @layer base {
   body {
@@ -169,5 +170,106 @@
 .animate-marquee:hover {
   animation-play-state: paused;
 }
+
+/* Dynamic Live Blobs and Premium Animations */
+@keyframes blob-pivot {
+  0%, 100% {
+    transform: translate(0px, 0px) scale(1);
+  }
+  33% {
+    transform: translate(30px, -50px) scale(1.1);
+  }
+  66% {
+    transform: translate(-20px, 20px) scale(0.9);
+  }
+}
+
+@keyframes float-gentle {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-10px) rotate(1deg);
+  }
+}
+
+@keyframes draw-path {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.animate-blob-pivot {
+  animation: blob-pivot 18s ease-in-out infinite;
+}
+
+.animate-blob-pivot-delayed {
+  animation: blob-pivot 22s ease-in-out infinite;
+  animation-delay: 2s;
+}
+
+.animate-blob-pivot-slow {
+  animation: blob-pivot 26s ease-in-out infinite;
+  animation-delay: 4s;
+}
+
+.animate-float-gentle {
+  animation: float-gentle 6s ease-in-out infinite;
+}
+
+/* Glassmorphism helpers */
+.glass-panel {
+  background: rgba(253, 251, 247, 0.65);
+  backdrop-filter: blur(14px) saturate(110%);
+  border: 1px solid rgba(244, 241, 234, 0.8);
+}
+
+.dark-glass-panel {
+  background: rgba(45, 45, 45, 0.05);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(45, 45, 45, 0.05);
+}
+
+/* Border Beam Sliding Glow Effect */
+.border-beam-container {
+  position: relative;
+}
+
+.border-beam-glow {
+  position: absolute;
+  inset: 0;
+  border: 2px solid transparent;
+  border-radius: inherit;
+  pointer-events: none;
+  background: linear-gradient(90deg, transparent, var(--color-cozy-sage), var(--color-cozy-amber), transparent) border-box;
+  -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  background-size: 200% 100%;
+  animation: border-beam-slide 4s linear infinite;
+  opacity: 0.85;
+}
+
+@keyframes border-beam-slide {
+  0% {
+    background-position: 200% 0%;
+  }
+  100% {
+    background-position: 0% 0%;
+  }
+}
+
+@keyframes border-beam {
+  100% {
+    offset-distance: 100%;
+  }
+}
+
+.animate-border-beam {
+  animation: border-beam var(--duration, 15s) linear infinite;
+}
+
+
+
 
 

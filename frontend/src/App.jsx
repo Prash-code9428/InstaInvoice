@@ -32,6 +32,8 @@ import AnalyticsDashboard from './components/AnalyticsDashboard';
 import Footer from './components/Footer';
 import NotificationDropdown from './components/NotificationDropdown';
 import logo from './assets/logo.svg';
+import BackgroundEffects from './components/BackgroundEffects';
+
 
 /**
  * Protected Dashboard Panel Layout
@@ -42,8 +44,10 @@ function DashboardLayout() {
 
 
   return (
-    <div className="min-h-screen flex flex-col bg-cozy-cream text-cozy-charcoal font-sans antialiased">
+    <div className="min-h-screen flex flex-col bg-transparent text-cozy-charcoal font-sans antialiased relative">
+      <BackgroundEffects />
       {/* Navigation Header */}
+
       <header className="sticky top-0 z-50 bg-cozy-cream/80 backdrop-blur-md border-b border-cozy-sand px-4 md:px-6 py-3 md:py-4 flex items-center justify-between print:hidden">
         <Link to="/" className="flex items-center">
           <img 

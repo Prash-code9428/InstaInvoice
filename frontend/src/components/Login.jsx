@@ -5,6 +5,12 @@ import { Receipt, Mail, KeyRound, AlertCircle, RefreshCw, Eye, EyeOff, HelpCircl
 import Footer from './Footer';
 import logo from '../assets/logo.svg';
 import { API_BASE_URL } from '../config';
+import BackgroundEffects from './BackgroundEffects';
+import { motion } from 'framer-motion';
+import { BorderBeam } from './magicui/BorderBeam';
+
+
+
 
 
 
@@ -162,9 +168,19 @@ function Login() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col justify-between bg-cozy-cream p-6 text-cozy-charcoal selection:bg-cozy-sage/25 selection:text-cozy-sage-dark">
-      <div className="flex-1 flex items-center justify-center">
-        <div className="w-full max-w-md bg-white rounded-cozy-lg border border-cozy-sand shadow-lg p-8 flex flex-col gap-6 animate-slideUp">
+    <div className="min-h-screen flex flex-col justify-between bg-transparent p-6 text-cozy-charcoal selection:bg-cozy-sage/25 selection:text-cozy-sage-dark relative">
+      <BackgroundEffects />
+      <div className="flex-1 flex items-center justify-center relative z-10">
+        <motion.div 
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ type: "spring", stiffness: 90, damping: 14 }}
+          className="w-full max-w-md bg-white/70 backdrop-blur-md rounded-cozy-lg border border-cozy-sand shadow-lg p-8 flex flex-col gap-6 border-beam-container"
+        >
+          <BorderBeam size={180} duration={8} />
+
+
+
         
         {/* Brand Header */}
         <div className="flex flex-col items-center gap-3 text-center">
@@ -292,9 +308,10 @@ function Login() {
             Don't have an account? Create one for free
           </Link>
         </div>
-      </div>
+      </motion.div>
     </div>
     <Footer />
+
 
     {/* Forgot Password Modal */}
     {isForgotModalOpen && (
