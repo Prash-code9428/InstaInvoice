@@ -12,20 +12,6 @@
 
 ---
 
-## 🎨 The Cozy Design System
-InstaInvoice is styled around a curated, harmonious **Cozy Warm & Sage** color palette. It avoids generic styling in favor of organic tones, smooth transitions, and premium typography (`Outfit` & `Poppins` from Google Fonts).
-
-| Token Name | Hex Value | Preview | Role |
-| :--- | :--- | :--- | :--- |
-| `cozy-cream` | `#FDFBF7` | 🟩 `■` | Primary Background |
-| `cozy-sand` | `#F4F1EA` | 🟩 `■` | Secondary Cards & Accents |
-| `cozy-charcoal`| `#2D2D2D` | 🟩 `■` | Primary Typography & Headers |
-| `cozy-sage` | `#7D8C77` | 🟩 `■` | Accent Green / Primary CTAs |
-| `cozy-sage-dark`| `#5D6C58` | 🟩 `■` | CTA Hovers & Active States |
-| `cozy-amber` | `#D97706` | 🟩 `■` | Warning states, Pending badges |
-
----
-
 ## 🚀 Key Features
 
 *   🔒 **Secure Authentication & Recovery**: JWT-based secure user sessions, bcrypt-hashed passwords, and multi-step security question recovery validation during registration, login, and settings update.
