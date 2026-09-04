@@ -74,28 +74,49 @@ function InvoiceEngine() {
 
     try {
       const canvas = await html2canvas(element, {
-        scale: 2, // crisp fonts
+        scale: 2, // crisp high-resolution fonts & images
         useCORS: true,
+        allowTaint: true,
         backgroundColor: '#ffffff',
-        logging: false
+        logging: false,
+        onclone: (clonedDoc) => {
+          const clonedEl = clonedDoc.getElementById('print-area');
+          if (clonedEl) {
+            clonedEl.style.width = '794px';
+            clonedEl.style.minWidth = '794px';
+            clonedEl.style.maxWidth = '794px';
+            clonedEl.style.margin = '0 auto';
+            clonedEl.style.boxShadow = 'none';
+            clonedEl.style.border = 'none';
+          }
+        }
       });
       
-      const imgData = canvas.toDataURL('image/png');
-      const pdf = new jsPDF('p', 'pt', 'a4');
-      const pdfWidth = pdf.internal.pageSize.getWidth();
-      const pdfHeight = pdf.internal.pageSize.getHeight();
+      const imgData = canvas.toDataURL('image/png', 1.0);
+      const pdf = new jsPDF('p', 'mm', 'a4');
+      const pdfWidth = pdf.internal.pageSize.getWidth(); // 210mm
+      const pdfHeight = pdf.internal.pageSize.getHeight(); // 297mm
       
-      const imgWidth = canvas.width;
-      const imgHeight = canvas.height;
-      const ratio = Math.min(pdfWidth / imgWidth, pdfHeight / imgHeight);
+      const imgProps = pdf.getImageProperties(imgData);
+      const imgRatio = imgProps.height / imgProps.width;
       
-      const finalWidth = imgWidth * ratio;
-      const finalHeight = imgHeight * ratio;
+      // Standard A4 margins (8mm)
+      const margin = 8;
+      const contentWidth = pdfWidth - (margin * 2);
+      const contentHeight = contentWidth * imgRatio;
       
-      const xOffset = (pdfWidth - finalWidth) / 2;
-      const yOffset = 20; // safe top gap
+      if (contentHeight <= pdfHeight - (margin * 2)) {
+        // Fits cleanly on 1 A4 page
+        pdf.addImage(imgData, 'PNG', margin, margin, contentWidth, contentHeight);
+      } else {
+        // Scale to fit height if content is longer
+        const fitScale = (pdfHeight - (margin * 2)) / contentHeight;
+        const finalW = contentWidth * fitScale;
+        const finalH = contentHeight * fitScale;
+        const xOffset = margin + (contentWidth - finalW) / 2;
+        pdf.addImage(imgData, 'PNG', xOffset, margin, finalW, finalH);
+      }
       
-      pdf.addImage(imgData, 'PNG', xOffset, yOffset, finalWidth, finalHeight);
       pdf.save(`invoice-${preview.number}.pdf`);
       setSuccess(`Successfully exported PDF for Invoice ${preview.number}.`);
     } catch (err) {

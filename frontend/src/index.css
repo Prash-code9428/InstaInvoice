@@ -120,24 +120,25 @@
     margin-bottom: 0 !important;
     padding-bottom: 0 !important;
     background: #ffffff !important;
-    color: #000000 !important;
     page-break-after: avoid !important;
     break-after: avoid !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
   }
   
-  /* Force all text color within print-area to print clearly in black */
+  /* Preserve colors and backgrounds accurately for printing */
   #print-area,
   #print-area * {
-    color: #000000 !important;
-    background-color: transparent !important;
-    border-color: #e5e7eb !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
   }
 
-  /* Force background color rendering explicitly */
+  /* Force dark and theme background rendering */
   .print-force-bg {
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;
-    background-color: rgba(125, 140, 119, 0.1) !important; /* Tinted sage */
+    background-color: #0f172a !important;
+    color: #ffffff !important;
   }
 
   /* Avoid splitting table rows across pages */

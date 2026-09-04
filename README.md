@@ -2,12 +2,12 @@
 
 > A modern, elegant, and full-stack invoice management platform built with a cozy, professional aesthetic. Fully responsive, secure, and optimized for seamless A4 PDF export.
 
-✨ **Live Link**: [instainvoice-production-934a.up.railway.app](https://instainvoice-production-934a.up.railway.app)
+✨ **Live Link**: [instainvoice.onrender.com](https://instainvoice.onrender.com)
 
-[![Live App](https://img.shields.io/badge/Live-Demo-brightgreen?style=flat-square&logo=google-chrome)](https://instainvoice-production-934a.up.railway.app)
+[![Live App](https://img.shields.io/badge/Live-Demo-brightgreen?style=flat-square&logo=google-chrome)](https://instainvoice.onrender.com)
 [![GitHub license](https://img.shields.io/github/license/Prash-code9428/InstaInvoice?style=flat-square&color=7D8C77)](LICENSE)
 [![GitHub stars](https://img.shields.io/github/stars/Prash-code9428/InstaInvoice?style=flat-square&color=D97706)](https://github.com/Prash-code9428/InstaInvoice/stargazers)
-[![Railway Deploy](https://img.shields.io/badge/Deployed%20on-Railway-blueviolet?style=flat-square&logo=railway)](https://railway.app)
+[![Render Deploy](https://img.shields.io/badge/Deployed%20on-Render-46E3B7?style=flat-square&logo=render)](https://render.com)
 [![Tech Stack](https://img.shields.io/badge/Stack-MERN%20+%20Supabase-5C6C58?style=flat-square)](https://react.dev)
 
 ---
@@ -32,7 +32,7 @@ InstaInvoice is styled around a curated, harmonious **Cozy Warm & Sage** color p
 *   📊 **Analytics Dashboard**: Dynamic sales reporting, total revenue counters, invoice statuses, and product metrics.
 *   ✍️ **Invoice Engine**: Add, edit, and remove dynamic items. Custom TAX/Discount modifiers, instant subtotal adjustments.
 *   📁 **Cloud Media Uploads**: Integrated Supabase storage pipelines for seamless custom logo and signature branding.
-*   🖨️ **Optimized Print Engine**: Custom CSS media-print layouts matching standard A4 dimensions perfectly.
+*   🖨️ **Optimized Print & PDF Engine**: Custom CSS media-print layouts matching standard A4 dimensions with dual export support (Direct Print + High-Resolution PDF Download).
 *   ⭐ **Sliding Testimonials Carousel**: Premium testimonials slider with custom transitions, chevrons, and dots pagination.
 
 ---
@@ -75,24 +75,26 @@ Here is a visual walk-through of the InstaInvoice platform layout, displaying sc
 
 ```mermaid
 graph TD
-    subgraph Client ["Client Layer (Frontend - Vite/React)"]
-        FE[Vite / React SPA]
-        Engine[Invoice Engine & A4 Preview]
-        Auth[JWT Guard / Protected Routes]
-    end
+    subgraph Render ["Render Cloud Hosting Platform"]
+        subgraph Client ["Client Layer (Render Static Site - Vite/React)"]
+            FE[Vite / React SPA]
+            Engine[Invoice Engine & A4 Preview]
+            Auth[JWT Guard / Protected Routes]
+        end
 
-    subgraph Server ["Server Layer (Backend - Express)"]
-        BE[Express.js REST API]
-        Middleware[Auth Middleware & Rate Limiting]
+        subgraph Server ["Server Layer (Render Web Service - Express)"]
+            BE[Express.js REST API]
+            Middleware[Auth Middleware & Rate Limiting]
+        end
     end
 
     subgraph Storage ["Database & Storage"]
-        DB[(MongoDB Atlas / Document Store)]
-        Supa[(Supabase Bucket - Logo & Signature)]
+        DB[(MongoDB Atlas / Cloud Cluster)]
+        Supa[(Supabase Bucket - Logo & Signature Storage)]
     end
 
     FE -->|HTTP Axios API Requests| BE
-    Engine -->|Print trigger| PDF[A4 PDF / Local Print Engine]
+    Engine -->|Direct Print & PDF Engine| PDF[A4 PDF / Local Print Engine]
     Auth -->|Credentials Check| BE
     BE -->|Mongoose Queries| DB
     FE -->|Direct Asset Upload Pipeline| Supa
@@ -166,39 +168,54 @@ VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
 
 ---
 
-## ☁️ Deploying to Railway
+## ☁️ Deploying to Render
 
-Railway is the fastest way to get your monorepo online. You will deploy **two separate services** from the same GitHub repository.
+You can easily deploy InstaInvoice on [Render](https://render.com) using two separate services from this single monorepo.
 
-### 🌐 Step A: Update your GitHub Repository
-Since we updated the frontend package dependencies, commit and push these updates:
+### 🌐 Step A: Push Code to GitHub
+Ensure all your latest changes are pushed to your GitHub repository:
 ```bash
 git add .
-git commit -m "chore: optimize frontend build configuration for Railway hosting"
+git commit -m "feat: optimize invoice print & pdf export, update render hosting"
 git push origin main
 ```
 
-### 🛢️ Step B: Deploy the Backend Service
-1.  Go to [Railway.app](https://railway.app) and create a **New Project**.
-2.  Select **Deploy from GitHub repo** and select your `InstaInvoice` repository.
-3.  Once the service is created, go to **Settings** -> **General** -> **Service Name** and rename it to `instainvoice-backend`.
-4.  Scroll to **Settings** -> **Build & Deploy** -> **Root Directory** and set it to `/backend`.
-5.  Go to the **Variables** tab and add:
-    *   `PORT` = `5000`
-    *   `MONGO_URI` = *(Your MongoDB Atlas connection URI)*
-    *   `JWT_SECRET` = *(Any secure random secret string)*
-6.  Go to the **Networking** tab, click **Generate Domain** to get your backend URL. Copy this domain (e.g. `https://instainvoice-backend-production.up.railway.app`).
+### 🛢️ Step B: Deploy the Backend (Web Service)
+1. Go to [Render Dashboard](https://dashboard.render.com/) and click **New +** $\rightarrow$ **Web Service**.
+2. Connect your `InstaInvoice` GitHub repository.
+3. Configure the settings:
+   - **Name**: `instainvoice-backend`
+   - **Root Directory**: `backend`
+   - **Runtime**: `Node`
+   - **Build Command**: `npm install`
+   - **Start Command**: `npm start`
+   - **Instance Type**: `Free`
+4. Add the following **Environment Variables**:
+   * `NODE_ENV` = `production`
+   * `MONGO_URI` = *(Your MongoDB Atlas connection URI)*
+   * `JWT_SECRET` = *(A secure random secret key)*
+   * `JWT_EXPIRES_IN` = `7d`
+5. Click **Create Web Service**.
+6. Once deployed, copy your backend URL (e.g. `https://instainvoice-backend.onrender.com`).
 
-### 🖥️ Step C: Deploy the Frontend Service
-1.  In the same Railway project dashboard, click **New** -> **GitHub Repo** and select the same `InstaInvoice` repository again.
-2.  Go to **Settings** -> **General** -> **Service Name** and rename it to `instainvoice-frontend`.
-3.  Scroll to **Settings** -> **Build & Deploy** -> **Root Directory** and set it to `/frontend`.
-4.  Go to the **Variables** tab and add:
-    *   `VITE_API_URL` = *(Paste the dynamic backend URL generated in Step B, e.g. `https://instainvoice-backend-production.up.railway.app`)*
-    *   `VITE_SUPABASE_URL` = *(Your Supabase project URL)*
-    *   `VITE_SUPABASE_ANON_KEY` = *(Your Supabase anonymous public API key)*
-5.  Go to the **Networking** tab and click **Generate Domain** to get your frontend live link.
-6.  **Done!** Your live application is fully active.
+### 🖥️ Step C: Deploy the Frontend (Static Site)
+1. In Render Dashboard, click **New +** $\rightarrow$ **Static Site**.
+2. Connect the same `InstaInvoice` repository.
+3. Configure the settings:
+   - **Name**: `instainvoice`
+   - **Root Directory**: `frontend`
+   - **Build Command**: `npm install && npm run build`
+   - **Publish Directory**: `dist`
+4. Add **Environment Variables**:
+   * `VITE_API_URL` = *(Your Render Backend URL from Step B, e.g. `https://instainvoice-backend.onrender.com`)*
+   * `VITE_SUPABASE_URL` = *(Your Supabase project URL)*
+   * `VITE_SUPABASE_ANON_KEY` = *(Your Supabase public anon key)*
+5. **Set up SPA Client-Side Routing**:
+   - In your Static Site settings $\rightarrow$ **Redirects / Rewrites** tab, add a rule:
+     - **Source**: `/*`
+     - **Destination**: `/index.html`
+     - **Action**: `Rewrite`
+6. Click **Create Static Site**.
 
 ---
 
